@@ -99,16 +99,18 @@ namespace Streamish.Repositories
                 using (var cmd = conn.CreateCommand())
                 {
                     cmd.CommandText = @"
-                          SELECT Title, Description, Url, DateCreated, UserProfileId
-                            FROM Video
-                           WHERE Id = @Id";
+                        SELECT v.Title, v.Description, v.Url, v.DateCreated, v.UserProfileId,up.id as VideoUserProfileId, up.Name,up.Email,up.DateCreated as UserProfileDateCreated,
+                    up.ImageUrl as UserProfileImageUrl FROM Video v left join UserProfile up
+                    on v.UserProfileId =up.id 
+                       WHERE v.Id = @id";
 
-                    DbUtils.AddParameter(cmd, "@Id", id);
+                    DbUtils.AddParameter(cmd, "@id", id);
 
                     using (SqlDataReader reader = cmd.ExecuteReader())
                     {
 
                         Video video = null;
+                        
                         if (reader.Read())
                         {
                             video = new Video()
@@ -120,13 +122,25 @@ namespace Streamish.Repositories
                                 Url = DbUtils.GetString(reader, "Url"),
                                 UserProfileId = DbUtils.GetInt(reader, "UserProfileId"),
                             };
+                            video.UserProfile = new UserProfile()
+                            {
+                                Id = DbUtils.GetInt(reader, "VideoUserProfileId"),
+                                Name = DbUtils.GetString(reader, "Name"),
+                                Email = DbUtils.GetString(reader, "Email"),
+                                DateCreated = DbUtils.GetDateTime(reader, "UserProfileDateCreated"),
+                                ImageUrl = DbUtils.GetString(reader, "UserProfileImageUrl"),
+
+                            };
+
                         }
 
                         return video;
+                       
                     }
                 }
             }
         }
+
 
         public void Add(Video video)
         {
