@@ -209,14 +209,29 @@ namespace Streamish.Tests
                 ImageUrl = $"http://user.url/{id}",
             };
         }
-      
-        public List<Video> Search(string count, bool sortDescending)
+        [Fact]
+        public void Search()
         {
-            return new List<Video>()
-            {
+          
+            var testSearch = "videoTitle";
+            var trueDesenting = true;
+            var videoDate= DateTime.Today;
+            var videos = CreateTestVideos(5);
+            
+            videos[0].Title = testSearch;
 
+            var repo = new InMemoryVideoRepository(videos);
+            var controller = new VideoController(repo);
 
-            };
+          
+
+            controller.Search(testSearch, trueDesenting, videoDate);
+
+            var videoFromDb = repo.InternalData.FirstOrDefault(p => p.Title == testSearch);
+            Assert.NotNull(videoFromDb);
+
+            Assert.Equal(testSearch, videoFromDb.Title);
+            Assert.Equal(videoDate, videoFromDb.DateCreated);
         }
     }
 }

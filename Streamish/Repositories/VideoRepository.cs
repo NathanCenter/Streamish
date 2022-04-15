@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using Microsoft.Data.SqlClient;
 using Microsoft.Extensions.Configuration;
@@ -192,7 +193,7 @@ namespace Streamish.Repositories
                 }
             }
         }
-        public List<Video> Search(string criterion, bool sortDescending, string hottest)
+        public List<Video> Search(string criterion, bool sortDescending, DateTime hottest)
         {
             using (var conn = Connection)
             {
@@ -318,6 +319,8 @@ where v.id=@Id";
 
                 }
             }
-        }
+
+      
+    }
     }
 

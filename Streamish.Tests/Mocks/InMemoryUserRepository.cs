@@ -78,5 +78,9 @@ namespace Streamish.Tests.Mocks
             throw new NotImplementedException();
         }
 
+        public UserProfile GetByIdandVideo(int id)
+        {
+            throw new NotImplementedException();
+        }
     }
 }
