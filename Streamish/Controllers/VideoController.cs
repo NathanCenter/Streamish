@@ -70,6 +70,10 @@ namespace Streamish.Controllers
             return NoContent();
         }
 
-
+        [HttpGet("search")]
+        public IActionResult Search(string q, bool sortDesc, string hottest)
+        {
+            return Ok(_videoRepository.Search(q, sortDesc,hottest));
+        }
     }
 }
