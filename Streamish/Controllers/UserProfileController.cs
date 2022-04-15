@@ -24,10 +24,7 @@ namespace Streamish.Controllers
             return Ok(userProfile);
         }
 
-        public object GetAll()
-        {
-            throw new NotImplementedException();
-        }
+    
 
         [HttpPost]
         public IActionResult Post(UserProfile userprofile)
